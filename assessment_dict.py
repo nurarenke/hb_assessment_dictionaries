@@ -151,8 +151,47 @@ def translate_to_pirate_talk(phrase):
         >>> translate_to_pirate_talk("my student is not a man!")
         'me swabbie be not a man!'
     """
+    # Create a dictionary of the table
+    # Also, side note: 
+    # I learned that if you hold down the alt key you can add text to muliple lines in sublime
+    pirate_to_english_dict = {
+    "sir"         : "matey",
+    "hotel"       : "fleabag inn",
+    "student"     : "swabbie",
+    "man"         : "matey",
+    "professor"   : "foul blaggart",
+    "restaurant"  : "galley",
+    "your"        : "yer",
+    "excuse"      : "arr",
+    "students"    : "swabbies",
+    "are"         : "be",
+    "restroom"    : "head",
+    "my"          : "me",
+    "is"          : "be"
+    }
+    # Created an empty list to store my sentence
+    translated_sentence = []
 
-    return ""
+    # Split the phrase into a list of words
+    phrase_list = phrase.split(' ')
+
+    # Iterated through the list of words
+    for word in phrase_list:
+
+        # If the word in the phrase matches our key in our dictionary
+        # Get the value from that matching key
+        # Append the value to our translated sentence list
+        if word in pirate_to_english_dict.keys():
+            translation = pirate_to_english_dict.get(word, word)
+            translated_sentence.append(translation)
+
+        # If the word does not match any of keys in our dictionary
+        # Then just append the word to our translated sentence list
+        else:
+            translated_sentence.append(word)
+
+    # Return tranlsated sentence list and turn it into a string
+    return " ".join(translated_sentence)
 
 
 def kids_game(names):
@@ -200,8 +239,49 @@ def kids_game(names):
     a dictionary (with the super-fast lookup they provide) can help;
     good solutions here will definitely require a dictionary.
     """
+    # create an empty list for results and add the first word from names
+    results = []
+    results.append(names[0])
 
-    return []
+    # delete the first word from names, so that you can't use that word again
+    del names[0]
+
+    words_by_first_letter_dict = {}
+
+    # Store the first letter of each word in the list as the key to the dict
+    for name in names:
+        key = name[0]
+
+        # If the key is not already in the dict, create the key with name
+        if key not in words_by_first_letter_dict:
+            words_by_first_letter_dict[key] = [name]
+
+        # Else the key is already in the dict, so append the name to the list of values 
+        else:
+            words_by_first_letter_dict[key].append(name)
+
+    # Then I want to find the last letter of the first word to use to search in our dictionary
+    first_word = results[0]
+    last_letter = first_word[-1]
+
+    # While the last letter is a key in the dictionary continue below
+    while last_letter in words_by_first_letter_dict.keys():
+
+        # Add the first word in our list of values to the results list
+        word_to_append = words_by_first_letter_dict[last_letter][0]
+        results.append(word_to_append)
+
+        # Then we can delete that word we used from our list of values
+        del words_by_first_letter_dict[last_letter][0]
+
+        # If all that is left is an empty list, delete the key from the dictionary
+        if words_by_first_letter_dict[last_letter] == []:
+            words_by_first_letter_dict.pop(last_letter)
+
+        # Then we reassign the last letter to the last letter of the word we just appended.
+        last_letter = word_to_append[-1]
+
+    return results
 
 #####################################################################
 # You can ignore everything below this.
